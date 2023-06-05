@@ -67,10 +67,19 @@ namespace MyWebApplicationCRUD.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.UserCredentials.Add(model);
-                _db.SaveChanges();
+                if (model.Password != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
+                    return View(model);
+                }
+                else {
 
-                return RedirectToAction("Login");
+                    _db.UserCredentials.Add(model);
+                    _db.SaveChanges();
+
+                    return RedirectToAction("Login");
+                }
+               
             }
 
             ModelState.AddModelError(string.Empty, "Registration failed");

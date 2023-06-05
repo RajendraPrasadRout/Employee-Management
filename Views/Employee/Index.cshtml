@@ -11,18 +11,12 @@
             <a asp-controller="Employee" asp-action="Create" class="btn btn-primary" style="margin-right: 10px;">
                 Add New Employee
             </a>
-            @if (ViewBag.IsHR != null && ViewBag.IsHR)
-            {
-                <a asp-controller="Employee" asp-action="Logout" class="btn btn-primary">
-                    Login
-                </a>
-            }
-            else
-            {
+            
+            
                 <a asp-controller="UserCredentials" asp-action="Login" class="btn btn-danger">
                     Logout
                 </a>
-            }
+            
         </div>
 </div>
 <table class="table table-bordered table-striped">
