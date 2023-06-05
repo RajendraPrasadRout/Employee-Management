@@ -16,11 +16,9 @@ namespace MyWebApplicationCRUD.Models
         [Display(Name = "Password")]
         public string? Password { get; set; }
 
-        /* [Required(ErrorMessage = "The confirm password field is required.")]
-         [Compare("Password", ErrorMessage = "The password and confirm password do not match.")]  */
+        
         [NotMapped]
         [DataType(DataType.Password)]
-        //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string? ConfirmPassword { get; set; }
 
 
