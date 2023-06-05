@@ -1,0 +1,51 @@
+﻿@model List<EmployeeRecords>
+
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Employee List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <span class="text-muted ml-2">User: @ViewBag.Username |</span>
+            <span class="text-muted ml-2">Type: @ViewBag.UserType</span>
+           
+                <a asp-controller="UserCredentials" asp-action="Login" class="btn btn-danger">
+                    Logout
+                </a>
+            
+        </div>
+
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Serial No.</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Designation</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int serialNumber = 1;
+
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@serialNumber</td>
+                        <td>@obj.Name</td>
+                        <td>@obj.Email</td>
+                        <td>@obj.Phone</td>
+                        <td>@obj.Designation</td>
+                        <td>@obj.Address</td>
+                    </tr>
+                    serialNumber++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
