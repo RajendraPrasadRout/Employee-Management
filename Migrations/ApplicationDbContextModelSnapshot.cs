@@ -48,25 +48,18 @@ namespace MyWebApplicationCRUD.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EmployeeId");
-
-                    b.ToTable("EmployeeRecords");
-                });
-
-            modelBuilder.Entity("MyWebApplicationCRUD.Models.UserCredentials", b =>
-                {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -74,12 +67,9 @@ namespace MyWebApplicationCRUD.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("EmployeeId");
 
-                    b.HasKey("UserId");
-
-                    b.ToTable("UserCredentials");
+                    b.ToTable("EmployeeRecords");
                 });
 #pragma warning restore 612, 618
         }

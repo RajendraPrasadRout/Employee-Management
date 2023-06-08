@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <style>
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .content-container {
+            flex: 1 1 50%;
+            margin-right: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-container {
+            flex: 1 1 40%;
+        }
+
+        .rotating-text {
+            display: flex;
+            opacity: 1;
+            transition: opacity 2s linear;
+            font-family: Arial, sans-serif;
+            justify-content: center;
+            height: 100%;
+            
+        }
+
+            .rotating-text.fade-out {
+                opacity: 0;
+            }
+
+    </style>
+</head>
+
+<h3>Welcome to Our Contact Page!</h3>
+
+<div class="contact-container">
+    <div class="content-container">
+        <p>Thank you for visiting our website. If you have any questions, feedback, or inquiries, please feel free to get in touch with us using the contact information below:</p>
+
+        <ul>
+            <li><b>Co-ordinate:</b> RA 8h 54m 39s | Dec +18° 51′ 32″</li>
+            <li><b>Satelite:</b> Phobos and Deimos </li>
+            <li><b>Planet:</b> Mars </li>
+        </ul>
+
+        <p>Please note: We may take a little longer to respond to your inquiries because we are aliens visiting from Mars. Our technology is advanced, but our email servers sometimes experience cosmic glitches. We appreciate your patience!</p>
+
+        <p>Feel free to reach out to us using the contact form below. We might be aliens, but we are friendly!</p>
+
+        <p>We're excited to hear from you. Our team of friendly aliens is ready to assist you with any questions or concerns you may have. Feel free to reach out to us using the contact form on the right, and we'll get back to you as soon as possible.</p>
+
+    </div>
+
+    <div class="form-container">
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Co-ordinate:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" style="margin-top: 10px;margin-bottom:10px;" class="btn btn-primary"><span class="bi bi-send"> Send Message</span></button>
+        </form>
+        <div class="additional-content-container text-center" style="display: flex; align-items: center; justify-content: center;">
+            <h2 class="rotating-text" id="rotating-text" style="color: yellowgreen; font-family: 'Lucida Calligraphy';">Actually, You can't contact us. We are aliens from MARS...</h2>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    var rotatingText = document.getElementById('rotating-text');
+    setInterval(function () {
+        rotatingText.classList.toggle('fade-out');
+    }, 2500);
+</script>

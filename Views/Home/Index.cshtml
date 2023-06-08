@@ -2,6 +2,165 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .feature {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+        overflow: hidden;
+    }
+
+        .feature-icon img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+    .feature-content {
+        flex: 1;
+    }
+
+    .login-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 100;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    main {
+        flex-grow: 1;
+    }
+
+    .footer {
+        height: 60px;
+        line-height: 60px;
+    }
+
+    
+    .animated-heading {
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .animated-heading.scale {
+            transform: scale(1.06);
+        }
+    
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var headings = document.querySelectorAll(".animated-heading");
+
+        setInterval(function () {
+            headings.forEach(function (heading) {
+                heading.classList.toggle("scale");
+            });
+        }, 3000); 
+    });
+</script>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <div>
+        <h1 class="display-4" style="font-family:Castellar">
+            <marquee behavior="scroll" direction="left" scrollamount="15">
+                <i>WELCOME TO MY WEB APPLICATION</i>
+            </marquee>
+        </h1>
+        <div class="login-btn" style="width:90px;">
+            <form>
+                <a asp-area="" asp-controller="Employee" asp-action="Login" class="btn btn-outline-light">Login</a>
+            </form>
+        </div>
+    </div>
+    <p>
+        This application allows users to perform various operations based on their roles.
+    </p>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 style="color:#c2c27a"><u>Normal User</u></h3>
+            <p>Can view employee records and make limited changes.</p>
+        </div>
+        <div class="col-md-6">
+            <h3 style="color:#c2c27a"><u>HR</u></h3>
+            <p>Has full access to employee records, including create, edit, and delete operations.</p>
+        </div>
+    </div>
+</div>
+<div class="feature">
+    <div class="feature-icon">
+        <img src="~/Images/update.png" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="feature-content">
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">REAL-TIME DATA UPDATES</h3>
+        <p><i>Experience the power of real-time updates as the application seamlessly refreshes data across multiple users and devices. Stay up to date with the latest information without manual page reloads.</i></p>
+        <p>Get instant access to real-time updates, ensuring that you always have the most accurate and current data at your fingertips. Whether it's tracking sales figures, monitoring stock prices, or managing project progress, our application keeps you in the loop with automatic data updates.</p>
+        <p>With real-time data updates, collaboration becomes more efficient as multiple team members can work on the same data simultaneously. Say goodbye to outdated information and delays in data synchronization. Our application ensures that you have access to the most recent data, enabling you to make informed decisions in real-time.</p>
+    </div>
+</div>
+
+<div class="feature">
+    <div class="feature-icon">
+        <img src="~/Images/interface.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="feature-content">
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">INTUITIVE USER INTERFACE</h3>
+        <p><i>Our user interface is designed with simplicity and ease of use in mind. Navigate through the application effortlessly and perform tasks efficiently with a clean and intuitive interface.</i></p>
+        <p>We believe that software should be user-friendly and accessible to everyone. With our intuitive user interface, you can quickly familiarize yourself with the application and start using it without any steep learning curves. Enjoy a seamless and efficient user experience, allowing you to focus on your work and achieve your goals.</p>
+        <p>Our intuitive user interface is designed to streamline your workflow and enhance productivity. From organized menus to intuitive icons and clear navigation, every element is carefully crafted to optimize your interaction with the application. Spend less time figuring out how to use the software and more time getting things done.</p>
+    </div>
+</div>
+
+<div class="feature">
+    <div class="feature-icon">
+        <img src="~/Images/security.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="feature-content">
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">ADVANCED SECURITY MEASURES</h3>
+        <p><i>Your data is our top priority. Rest assured that we have implemented robust security measures to protect your sensitive information. Your privacy and confidentiality are of utmost importance to us.</i></p>
+        <p>We understand the importance of data security in today's digital landscape. That's why we have implemented industry-standard security protocols and encryption techniques to safeguard your data. Our advanced security measures ensure that your information remains confidential and protected from unauthorized access. You can trust our application to keep your data secure and maintain your privacy.</p>
+        <p>In addition to encryption and secure authentication methods, we regularly update our security measures to stay ahead of emerging threats. Our team of security experts works tirelessly to monitor, detect, and mitigate any potential vulnerabilities, providing you with peace of mind while using our application.</p>
+    </div>
+</div>
+
+<div class="feature">
+    <div class="feature-icon">
+        <img src="~/Images/design.png" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="feature-content">
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">RESPONSIVE DESIGN</h3>
+        <p><i>Access the application on any device, whether it's a desktop computer, tablet, or mobile phone. Our responsive design ensures a seamless and optimized user experience across different screen sizes.</i></p>
+        <p>We believe in providing a consistent user experience regardless of the device you use. Our application's responsive design adapts to different screen sizes and resolutions, ensuring that you can access and interact with the application seamlessly on any device. Whether you prefer working on a large desktop monitor or on-the-go with a mobile device, our responsive design guarantees optimal usability and visual appeal.</p>
+        <p>No matter the screen size, our responsive design maintains the integrity of the application's layout and functionality. You can enjoy the same features and capabilities, whether you're using a desktop computer, tablet, or smartphone. Say goodbye to pinching and zooming, and experience a fully responsive and enjoyable user interface.</p>
+    </div>
+</div>
+
+<div class="feature">
+    <div class="feature-icon">
+        <img src="~/Images/support.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="feature-content">
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">24/7 CUSTOMER SUPPORT</h3>
+        <p><i>Our dedicated customer support team is available 24/7 to assist you with any questions, concerns, or technical issues you may encounter. We are here to ensure your experience with our application is smooth and hassle-free.</i></p>
+        <p>We believe in providing exceptional customer support to ensure your satisfaction. Our dedicated support team is available round the clock, ready to assist you with any inquiries, address concerns, or resolve technical issues that you may come across while using our application. Rest assured that we are committed to making your experience with our application as smooth and hassle-free as possible.</p>
+        <p>Whether you have a question about a specific feature, need assistance in troubleshooting an issue, or simply want to provide feedback, our customer support team is just a message or call away. We value your feedback and strive to continuously improve our application based on your needs and suggestions. Trust us to provide prompt and reliable support whenever you need it.</p>
+    </div>
 </div>

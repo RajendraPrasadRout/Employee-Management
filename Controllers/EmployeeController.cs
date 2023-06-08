@@ -1,18 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyWebApplicationCRUD.EmployeeData;
+using Microsoft.AspNetCore.Http;
 using MyWebApplicationCRUD.Models;
 using System.Collections.Generic;
 using System.Linq;
+using MyWebApplicationCRUD.EmployeeData;
 
 namespace MyWebApplicationCRUD.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly List<EmployeeRecords> _employeeRecords;
         private readonly ApplicationDbContext _db;
 
         public EmployeeController(ApplicationDbContext db)
         {
+            _employeeRecords = new List<EmployeeRecords>();
             _db = db;
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
         }
 
         public IActionResult Index()
@@ -20,73 +28,124 @@ namespace MyWebApplicationCRUD.Controllers
             string? userType = HttpContext.Session.GetString("UserType");
             string? userId = HttpContext.Session.GetString("UserId");
 
-            UserCredentials? user = _db.UserCredentials.FirstOrDefault(u => u.UserId == userId);
-            string? username = user?.Username;
-
             ViewBag.UserType = string.IsNullOrEmpty(userType) ? string.Empty : userType.ToUpper();
-            ViewBag.Username = username;
+            ViewBag.UserId = userId;
 
-            if (string.Equals(userType, "normal", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(userType, "normal", System.StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("IndexNormal", "Employee");
             }
 
-            List<EmployeeRecords> objEmployeeList = _db.EmployeeRecords.Where(e => e.IsActive).ToList();
-            return View(objEmployeeList);
+                List<EmployeeRecords> employeeRecords = _db.EmployeeRecords.Where(e => e.IsActive).ToList();
+
+            return View(employeeRecords);
         }
+
 
         public IActionResult IndexNormal()
         {
             string? userType = HttpContext.Session.GetString("UserType");
             string? userId = HttpContext.Session.GetString("UserId");
 
-            UserCredentials? user = _db.UserCredentials.FirstOrDefault(u => u.UserId == userId);
-            string? username = user?.Username;
-
             ViewBag.UserType = string.IsNullOrEmpty(userType) ? string.Empty : userType.ToUpper();
-            ViewBag.Username = username;
 
-            if (!string.Equals(userType, "normal", StringComparison.OrdinalIgnoreCase))
+            EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(e => e.UserId == userId && e.IsActive);
+
+            if (employee != null)
             {
-                return RedirectToAction("Index");
+                ViewBag.DataFound = true;
+                ViewBag.Name = employee.Name; 
+                return View(employee);
             }
-
-            List<EmployeeRecords> objEmployeeList = _db.EmployeeRecords.Where(e => e.IsActive).ToList();
-            return View(objEmployeeList);
+            else
+            {
+                ViewBag.DataFound = false;
+                return View();
+            }
         }
-        public IActionResult Create()
-        {
-            if (!UserIsHR())
-            {
-                return RedirectToAction("Index");
-            }
 
+
+        [HttpGet]
+        public IActionResult Login()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(EmployeeRecords obj)
+        public IActionResult Login(EmployeeRecords model)
         {
-            if (!UserIsHR())
-            {
-                return RedirectToAction("Index");
-            }
-
             if (ModelState.IsValid)
             {
-                obj.IsDeleted = false;
-                obj.IsActive = true;
+                string? userId = model.UserId?.ToUpper();
+                string? password = model.Password;
+                string? userType = model.UserType?.ToUpper();
 
-                _db.EmployeeRecords.Add(obj);
+                EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(c =>
+                    c.UserId.ToUpper() == userId &&
+                    c.Password == password &&
+                    c.UserType.ToUpper() == userType);
+
+                if (employee != null)
+                {
+                    ViewBag.Name = employee.Name; 
+
+                    HttpContext.Session.SetString("UserType", model.UserType);
+                    HttpContext.Session.SetString("UserId", model.UserId);
+
+                    TempData["message"] = "Login successful";
+                    TempData["messageClass"] = "text-success";
+
+                    if (model.UserType == "normal")
+                    {
+                        return RedirectToAction("IndexNormal", "Employee");
+                    }
+                    else if (model.UserType == "hr")
+                    {
+                        return RedirectToAction("Index", "Employee");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login credentials");
+                    TempData["message"] = "Invalid login credentials";
+                    TempData["messageClass"] = "text-danger";
+                }
+            }
+
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Register(EmployeeRecords model)
+        {
+            if (ModelState.IsValid)
+            {
+                EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(e => e.UserId == model.UserId);
+                if (employee != null)
+                {
+                    ModelState.AddModelError(string.Empty, "User ID already taken");
+                    return View(model);
+                }
+
+                model.IsActive = true;
+                model.IsDeleted = false;
+
+                _db.EmployeeRecords.Add(model);
                 _db.SaveChanges();
-
-                TempData["success"] = "Created Successfully";
 
                 return RedirectToAction("Index");
             }
 
-            return View();
+            ModelState.AddModelError(string.Empty, "Registration failed");
+            return View(model);
         }
+
 
         public IActionResult Edit(int? id)
         {
@@ -100,18 +159,18 @@ namespace MyWebApplicationCRUD.Controllers
                 return NotFound();
             }
 
-            EmployeeRecords? employeeRecords = _db.EmployeeRecords.Find(id);
+            EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(e => e.EmployeeId == id);
 
-            if (employeeRecords == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(employeeRecords);
+            return View(employee);
         }
 
         [HttpPost]
-        public IActionResult Edit(EmployeeRecords obj)
+        public IActionResult Edit(EmployeeRecords model)
         {
             if (!UserIsHR())
             {
@@ -120,32 +179,30 @@ namespace MyWebApplicationCRUD.Controllers
 
             if (ModelState.IsValid)
             {
-                EmployeeRecords? existingRecord = _db.EmployeeRecords.Find(obj.EmployeeId);
+                EmployeeRecords? existingRecord = _db.EmployeeRecords.Find(model.EmployeeId);
 
                 if (existingRecord == null)
                 {
                     return NotFound();
                 }
 
-                obj.IsActive = existingRecord.IsActive;
-                obj.IsDeleted = existingRecord.IsDeleted;
+                existingRecord.Name = model.Name;
+                existingRecord.Email = model.Email;
+                existingRecord.Phone = model.Phone;
+                existingRecord.Designation = model.Designation;
+                existingRecord.Address = model.Address;
 
-                existingRecord.Name = obj.Name;
-                existingRecord.Email = obj.Email;
-                existingRecord.Phone = obj.Phone;
-                existingRecord.Designation = obj.Designation;
-                existingRecord.Address = obj.Address;
-
-                _db.EmployeeRecords.Update(existingRecord);
                 _db.SaveChanges();
 
                 TempData["success"] = "Updated Successfully";
 
                 return RedirectToAction("Index");
             }
-
-            return View();
+            return View(model);
         }
+
+
+
 
         public IActionResult Delete(int? id)
         {
@@ -159,14 +216,14 @@ namespace MyWebApplicationCRUD.Controllers
                 return NotFound();
             }
 
-            EmployeeRecords? employeeRecords = _db.EmployeeRecords.Find(id);
+            EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(e => e.EmployeeId == id);
 
-            if (employeeRecords == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(employeeRecords);
+            return View(employee);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -177,17 +234,16 @@ namespace MyWebApplicationCRUD.Controllers
                 return RedirectToAction("Index");
             }
 
-            EmployeeRecords? obj = _db.EmployeeRecords.Find(id);
+            EmployeeRecords? employee = _db.EmployeeRecords.FirstOrDefault(e => e.EmployeeId == id);
 
-            if (obj == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            obj.IsActive = false;
-            obj.IsDeleted = true;
+            employee.IsDeleted = true;
+            employee.IsActive = false;
 
-            _db.EmployeeRecords.Update(obj);
             _db.SaveChanges();
 
             TempData["success"] = "Deleted successfully";
@@ -195,11 +251,11 @@ namespace MyWebApplicationCRUD.Controllers
             return RedirectToAction("Index");
         }
 
+
         private bool UserIsHR()
         {
             string? userType = HttpContext.Session.GetString("UserType");
-            return string.Equals(userType, "HR", StringComparison.OrdinalIgnoreCase);
+            return string.Equals(userType, "HR", System.StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

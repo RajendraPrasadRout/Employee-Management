@@ -8,13 +8,13 @@ namespace MyWebApplicationCRUD.EmployeeData
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
             
         }
+     
         public DbSet<EmployeeRecords> EmployeeRecords { get; set; }
-
-        public DbSet<UserCredentials> UserCredentials { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
         }
+
     }
 }

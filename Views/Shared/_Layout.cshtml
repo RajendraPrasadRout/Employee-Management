@@ -7,10 +7,31 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyWebApplicationCRUD.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        .navbar {
+            padding: 0.25rem 0.5rem;
+            height: 70px; 
+        }
+
+        .navbar-brand {
+            font-size: 1rem;
+        }
+
+        .bi-house-door {
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            height: 60px; 
+            line-height: 60px; 
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-2">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -18,17 +39,25 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-0">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="text-align: center;">
+                                <i class="bi bi-house-door" style="font-size: 20px;"></i>
+                                <p style="margin-top: 0.02px;">HOME</p>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="UserCredentials" asp-action="Login">Login</a>
+                            <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Contact" style="text-align: center;">
+                                <i class="bi bi-telephone" style="font-size: 20px;"></i>
+                                <p style="margin-top: 0.002px;">CONTACT US</p>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="UserCredentials" asp-action="Register">Register</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="text-align: center;">
+                                <i class="bi bi-shield-exclamation" style="font-size:20px;"></i>                               
+                                <p style="margin-top: 0.002px;">PRIVACY</p>
+                            </a>
                         </li>
-                       
                     </ul>
                 </div>
             </div>

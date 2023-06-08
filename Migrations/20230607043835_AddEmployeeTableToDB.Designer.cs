@@ -11,8 +11,8 @@ using MyWebApplicationCRUD.EmployeeData;
 namespace MyWebApplicationCRUD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230602053800_AddUserCredentialToDb")]
-    partial class AddUserCredentialToDb
+    [Migration("20230607043835_AddEmployeeTableToDB")]
+    partial class AddEmployeeTableToDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,25 +51,18 @@ namespace MyWebApplicationCRUD.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EmployeeId");
-
-                    b.ToTable("EmployeeRecords");
-                });
-
-            modelBuilder.Entity("MyWebApplicationCRUD.Models.UserCredentials", b =>
-                {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -77,13 +70,9 @@ namespace MyWebApplicationCRUD.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("EmployeeId");
 
-                    b.HasKey("UserId");
-
-                    b.ToTable("UserCredentials");
+                    b.ToTable("EmployeeRecords");
                 });
 #pragma warning restore 612, 618
         }
