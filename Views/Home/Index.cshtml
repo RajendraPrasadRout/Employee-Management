@@ -11,8 +11,8 @@
     }
 
     .feature-icon {
-        width: 70px;
-        height: 70px;
+        width: 180px;
+        height: 180px;
         background-color: #e0e0e0;
         border-radius: 50%;
         display: flex;
@@ -55,7 +55,7 @@
         line-height: 60px;
     }
 
-    
+
     .animated-heading {
         transition: transform 0.3s ease-in-out;
     }
@@ -63,7 +63,12 @@
         .animated-heading.scale {
             transform: scale(1.06);
         }
-    
+
+    .border-div {
+        border: 1px #000000 dashed;
+        padding: 5px;
+    }
+
 </style>
 
 <script>
@@ -74,13 +79,13 @@
             headings.forEach(function (heading) {
                 heading.classList.toggle("scale");
             });
-        }, 3000); 
+        }, 3000);
     });
 </script>
 
 <div class="text-center">
     <div>
-        <h1 class="display-4" style="font-family:Castellar">
+        <h1 class="display-4" style="font-family:Castellar;color:lightblue">
             <marquee behavior="scroll" direction="left" scrollamount="15">
                 <i>WELCOME TO MY WEB APPLICATION</i>
             </marquee>
@@ -95,22 +100,28 @@
         This application allows users to perform various operations based on their roles.
     </p>
     <div class="row">
-        <div class="col-md-6">
-            <h3 style="color:#c2c27a"><u>Normal User</u></h3>
+        <div class="col-md-6 border-div">
+            <h3 style="color:#33ccff;font-family:'Baskerville Old Face';">Normal User</h3>
             <p>Can view employee records and make limited changes.</p>
         </div>
-        <div class="col-md-6">
-            <h3 style="color:#c2c27a"><u>HR</u></h3>
+        <div class="col-md-6 border-div">
+            <h3 style="color:#33ccff;font-family:'Baskerville Old Face';">HR</h3>
             <p>Has full access to employee records, including create, edit, and delete operations.</p>
         </div>
     </div>
+
 </div>
+<h2 style="color:#00ffcc; font-family:'Baskerville Old Face'; margin-top:30px; margin-left:50px; margin-bottom:20px; transition: transform 0.3s ease-in-out;">
+    <u><i>What We Offer :- </i></u>
+</h2>
+
+
 <div class="feature">
     <div class="feature-icon">
         <img src="~/Images/update.png" style="width: 100%; height: 100%; object-fit: cover;">
     </div>
     <div class="feature-content">
-        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar;">REAL-TIME DATA UPDATES</h3>
+        <h3 class="text-center animated-heading" style="color:#ff6600;font-family:Castellar; margin-top:10px;">REAL-TIME DATA UPDATES</h3>
         <p><i>Experience the power of real-time updates as the application seamlessly refreshes data across multiple users and devices. Stay up to date with the latest information without manual page reloads.</i></p>
         <p>Get instant access to real-time updates, ensuring that you always have the most accurate and current data at your fingertips. Whether it's tracking sales figures, monitoring stock prices, or managing project progress, our application keeps you in the loop with automatic data updates.</p>
         <p>With real-time data updates, collaboration becomes more efficient as multiple team members can work on the same data simultaneously. Say goodbye to outdated information and delays in data synchronization. Our application ensures that you have access to the most recent data, enabling you to make informed decisions in real-time.</p>

@@ -36,7 +36,7 @@ namespace MyWebApplicationCRUD.Controllers
                 return RedirectToAction("IndexNormal", "Employee");
             }
 
-                List<EmployeeRecords> employeeRecords = _db.EmployeeRecords.Where(e => e.IsActive).ToList();
+            List<EmployeeRecords> employeeRecords = _db.EmployeeRecords.Where(e => e.IsActive).ToList();
 
             return View(employeeRecords);
         }
@@ -54,7 +54,7 @@ namespace MyWebApplicationCRUD.Controllers
             if (employee != null)
             {
                 ViewBag.DataFound = true;
-                ViewBag.Name = employee.Name; 
+                ViewBag.Name = employee.Name;
                 return View(employee);
             }
             else
@@ -87,7 +87,7 @@ namespace MyWebApplicationCRUD.Controllers
 
                 if (employee != null)
                 {
-                    ViewBag.Name = employee.Name; 
+                    ViewBag.Name = employee.Name;
 
                     HttpContext.Session.SetString("UserType", model.UserType);
                     HttpContext.Session.SetString("UserId", model.UserId);
@@ -200,9 +200,6 @@ namespace MyWebApplicationCRUD.Controllers
             }
             return View(model);
         }
-
-
-
 
         public IActionResult Delete(int? id)
         {

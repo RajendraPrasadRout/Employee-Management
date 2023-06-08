@@ -16,7 +16,7 @@
         @if (ViewBag.DataFound)
         {
             <form style="border: 2px solid #ccc; padding: 20px; border-radius: 5px; background-color: #f8f8f8; width: 600px;">
-                <h2 style="margin-bottom: 6px;color:#f5a878;">Your Details</h2>
+                <h2 style="margin-bottom: 6px;color:#f5a878; font-family:Algerian;">YOUR DETAILS</h2>
                 <h2 style="margin-bottom: 20px; color:#f5a878;">****************************</h2>
 
                 <div style="display: flex; align-items: center; margin-bottom: 10px;">
@@ -43,14 +43,20 @@
             <div style="margin-top: 20px; font-family:'Bell MT'; font-style:italic;font-size:large;">
 
                 <p style="color:forestgreen;"><b>Hope you are doing well....</b></p>
-                <p style="color:forestgreen;"><b>Please check your details in the employee profile section and ensure that all the information is up to date. If you need to make any changes, please contact the HR department for assistance.</b></p>
+                <p style="color:forestgreen;"><b>Please check your details in the details section and ensure that all the information is up to date. If you need to make any changes, please contact the HR department for assistance.</b></p>
                 <p style="color:forestgreen;"><b>If you have any questions or need further support, feel free to reach out to our customer service team.</b></p>
 
             </div>
         }
         else
         {
-            <p style="color: red; margin-left: 20px; font-weight: bold; font-size: 40px;font-style:italic;">No data found for your ID.....</p>
+            <div style="margin-left: 20px; font-weight: bold; font-size: 35px; font-style: italic;">
+                <span style="color:red;">No data found for your ID.....</span><br />
+                <span style="color:red;">Employee has been removed.....</span><br />
+                <span style="color:aquamarine; font-size:20px;">(If you have any questions or concerns regarding your account, please don't hesitate to reach out to the HR department.)</span>
+            </div>
+
+
         }
     </div>
 </div>
