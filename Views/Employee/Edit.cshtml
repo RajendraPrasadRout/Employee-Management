@@ -1,58 +1,125 @@
-﻿@model EmployeeRecords
+﻿<script>
+    function validateName() {
+        var nameInput = document.getElementById("Name");
+        var name = nameInput.value.trim();
+        var nameError = document.getElementById("nameError");
+
+        if (name.length === 0 || !/^[a-zA-Z\s]+$/.test(name)) {
+            nameError.innerText = "Name cannot contain special characters and numbers.";
+            disableUpdateButton();
+        } else {
+            nameError.innerText = "";
+            enableUpdateButton();
+        }
+    }
+
+    function validateEmail() {
+        var emailInput = document.getElementById("Email");
+        var email = emailInput.value.trim();
+        var emailError = document.getElementById("emailError");
+
+        if (!/^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(email)) {
+            emailError.innerText = "Invalid email address.";
+            disableUpdateButton();
+        } else {
+            emailError.innerText = "";
+            enableUpdateButton();
+        }
+    }
+
+    function validatePhone() {
+        var phoneInput = document.getElementById("Phone");
+        var phone = phoneInput.value.trim();
+        var phoneError = document.getElementById("phoneError");
+
+        if (!/^\d{0,10}$/.test(phone) || phone.length !== 10) {
+            phoneError.innerText = "Phone number must contain 10 digits.";
+            disableUpdateButton();
+        } else {
+            phoneError.innerText = "";
+            enableUpdateButton();
+        }
+    }
+
+
+    function validateDesignation() {
+        var designationInput = document.getElementById("Designation");
+        var designation = designationInput.value.trim();
+        var designationError = document.getElementById("designationError");
+
+        if (designation.length === 0 || !/^[a-zA-Z\s]+$/.test(designation)) {
+            designationError.innerText = "Designation should contain only letters.";
+            disableUpdateButton();
+        } else {
+            designationError.innerText = "";
+            enableUpdateButton();
+        }
+    }
+
+    function disableUpdateButton() {
+        var updateButton = document.getElementById("updateButton");
+        updateButton.disabled = true;
+    }
+
+    function enableUpdateButton() {
+        var updateButton = document.getElementById("updateButton");
+        updateButton.disabled = false;
+    }
+
+    document.getElementById("Name").addEventListener("input", validateName);
+    document.getElementById("Email").addEventListener("input", validateEmail);
+    document.getElementById("Phone").addEventListener("input", validatePhone);
+    document.getElementById("Designation").addEventListener("input", validateDesignation);
+</script>
+
+@model MyWebApplicationCRUD.Models.EmployeeRecords
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <form method="post" style="display: flex; align-items: center; justify-content: center; height: 80vh;">
     <input asp-for="EmployeeId" hidden />
     <div class="border pt-3 mt-4" style="width: 600px; padding: 20px; border: 1px solid #ccc; background-color: #f2f2f2; border-radius: 5px; margin: auto;">
         <div class="row pb-2">
-            <h2 class="text-primary" align="center">
-                Edit Details
+            <h2 class="text-secondary-emphasis" align="center">
+                EDIT DETAILS
             </h2>
         </div>
         <div class="mb-3">
             <label>Name</label>
-            <input asp-for="Name" class="form-control" />
+            <input asp-for="Name" class="form-control" required oninput="validateName()" />
             <span asp-validation-for="Name" class="text-danger"></span>
+            <span id="nameError" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label>Email</label>
-            <input asp-for="Email" class="form-control" />
+            <input asp-for="Email" class="form-control" required oninput="validateEmail()" />
             <span asp-validation-for="Email" class="text-danger"></span>
-
-        </div> <div class="mb-3">
+            <span id="emailError" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
             <label>Phone</label>
-            <input asp-for="Phone" class="form-control" />
+            <input asp-for="Phone" class="form-control" required maxlength="10" oninput="validatePhone()" />
             <span asp-validation-for="Phone" class="text-danger"></span>
-
+            <span id="phoneError" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label>Designation</label>
-            <input asp-for="Designation" class="form-control" />
-            <span asp-validation-for="Designation" class="text-danger"></span>
-
+            <input asp-for="Designation" class="form-control" id="Designation" required oninput="validateDesignation()" />
+            <span asp-validation-for="Designation" class="text-danger" id="designationError"></span>
         </div>
         <div class="mb-3">
             <label>Address</label>
-            <input asp-for="Address" class="form-control" />
+            <input asp-for="Address" class="form-control" required />
             <span asp-validation-for="Address" class="text-danger"></span>
-
-
-            <div class="row">
-                <div class="col-6">
-                    <button type="submit" class="btn btn-primary form-control mt-4"><span class="bi bi-arrow-repeat"> UPDATE</span></button>
-                </div>
-                <div class="col-6">
-                    <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-primary form-control mt-4">
-                        <span class="bi bi-arrow-left-short"> BACK</span>
-                    </a>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary form-control mt-4" id="updateButton"><span class="bi bi-arrow-repeat"> UPDATE</span></button>
+            </div>
+            <div class="col-6">
+                <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-primary form-control mt-4">
+                    <span class="bi bi-arrow-left-short"> BACK</span>
+                </a>
             </div>
         </div>
     </div>
 </form>
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}

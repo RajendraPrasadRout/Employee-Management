@@ -198,6 +198,7 @@ namespace MyWebApplicationCRUD.Controllers
 
                 return RedirectToAction("Index");
             }
+
             return View(model);
         }
 
@@ -223,8 +224,9 @@ namespace MyWebApplicationCRUD.Controllers
             return View(employee);
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
         {
             if (!UserIsHR())
             {

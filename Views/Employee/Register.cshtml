@@ -4,6 +4,7 @@
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 @using (Html.BeginForm("Register", "Employee", FormMethod.Post))
 {
     <div class="container">
@@ -19,26 +20,31 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Name, "Name")
-                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required" })
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required", oninput = "validateName()" })
                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    <span id="nameError" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Email, "Email")
-                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", required = "required" })
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", required = "required", oninput = "validateEmail()" })
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                </div>
+                                    <span id="emailError" class="text-danger"></span>
+                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Phone, "Phone")
-                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", required = "required", maxlength = "10" })
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", required = "required", maxlength = "10", oninput = "validatePhone()" })
                                     @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                    <span id="phoneError" class="text-danger"></span>
                                 </div>
+
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Designation, "Designation")
                                     @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                    <span id="designationError" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -57,13 +63,14 @@
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Password)
-                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = "required" })
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = "required", oninput = "validatePassword()" })
                                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    <span id="passwordError" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
                                     @Html.Label("Confirm Password")
-                                    @Html.Password("ConfirmPassword", null, new { @class = "form-control", required = "required" })
+                                    @Html.Password("ConfirmPassword", null, new { @class = "form-control", required = "required", oninput = "validateConfirmPassword()" })
                                     <span id="confirmPasswordError" class="text-danger"></span>
                                 </div>
                             </div>
@@ -74,25 +81,22 @@
                                 <div class="form-group">
                                     <div class="mx-auto" style="width: fit-content;">
                                         @Html.DropDownListFor(model => model.UserType, new SelectList(new[]
-                                    {
-                                    new SelectListItem { Value = "hr", Text = "HR" },
-                                    new SelectListItem { Value = "normal", Text = "Normal User" }
-                                    }, "Value", "Text"), "-- SELECT USER TYPE --", new { @class = "form-control", required = "required" })
+                                        {
+                                            new SelectListItem { Value = "hr", Text = "HR" },
+                                            new SelectListItem { Value = "normal", Text = "Normal User" }
+                                        },  "Value", "Text"), "--- SELECT USER TYPE ---", new { @class = "form-control", required = "required" })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
 
-
-
                         <div class="row justify-content-center">
                             <div class="col-md-6">
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;"><span class="bi bi-plus"></span> Add</button>
+                                    <button type="submit" class="btn btn-primary" id="addButton" style="margin-top: 10px;" disabled><span class="bi bi-plus"></span> Add</button>
                                     <button type="button" class="btn btn-outline-secondary" onclick="goBack()" style="margin-top: 10px; margin-left: 10px;"><span class="bi bi-arrow-left-short"></span> Back</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -102,23 +106,139 @@
     </div>
 
     <script>
-        function validatePasswordMatch() {
-            var password = document.getElementById("Password").value;
-            var confirmPassword = document.getElementById("ConfirmPassword").value;
-            var errorSpan = document.getElementById("confirmPasswordError");
+    function validateName() {
+        var nameInput = document.getElementById("Name");
+        var name = nameInput.value.trim();
+        var nameError = document.getElementById("nameError");
+        var addButton = document.getElementById("addButton");
 
-            if (password !== confirmPassword) {
-                errorSpan.innerText = "The password and confirmation password do not match.";
+        if (name.length === 0 || !/^[a-zA-Z\s]+$/.test(name)) {
+            nameError.innerText = "Name cannot contain special characters and numbers.";
+            addButton.disabled = true;
+        } else {
+            nameError.innerText = "";
+            enableAddButtonIfRequirementsFulfilled();
+        }
+    }
+
+    function validateEmail() {
+        var emailInput = document.getElementById("Email");
+        var email = emailInput.value.trim();
+        var emailError = document.getElementById("emailError");
+        var addButton = document.getElementById("addButton");
+
+        if (!/^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(email)) {
+            emailError.innerText = "Invalid email address.";
+            addButton.disabled = true;
+        } else {
+            emailError.innerText = "";
+            enableAddButtonIfRequirementsFulfilled();
+        }
+    }
+
+        function validatePhone() {
+            var phoneInput = document.getElementById("Phone");
+            var phone = phoneInput.value.trim();
+            var phoneError = document.getElementById("phoneError");
+            var addButton = document.getElementById("addButton");
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+                phoneError.innerText = "Phone number must be a 10-digit number.";
+                addButton.disabled = true;
             } else {
-                errorSpan.innerText = "";
+                phoneError.innerText = "";
+                enableAddButtonIfRequirementsFulfilled();
             }
         }
 
-        function goBack() {
-            window.history.back();
+
+    function validateDesignation(){
+        var designationInput = document.getElementById("Designation");
+        var designation = designationInput.value.trim();
+        var designationError = document.getElementById("designationError");
+        var addButton = document.getElementById("addButton");
+        if (designation.length === 0 || !/^[a-zA-Z\s]+$/.test(designation)){
+            designationError.innerText = "Designation can only contain letters";
+            addButton.disabled = true;
+        }else{
+            designationError.innerText = "";
+            enableAddButtonIfRequirementsFulfilled();
         }
 
-        document.getElementById("Password").addEventListener("input", validatePasswordMatch);
-        document.getElementById("ConfirmPassword").addEventListener("input", validatePasswordMatch);
-    </script>
+    }
+    function validatePassword() {
+        var passwordInput = document.getElementById("Password");
+        var password = passwordInput.value;
+        var passwordError = document.getElementById("passwordError");
+        var addButton = document.getElementById("addButton");
+
+        if (!/^(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,}$/.test(password)) {
+            passwordError.innerText = "Password must contain at least one uppercase letter, one special character, and be at least 6 characters long.";
+            addButton.disabled = true;
+        } else {
+            passwordError.innerText = "";
+            enableAddButtonIfRequirementsFulfilled();
+        }
+    }
+
+    function validateConfirmPassword() {
+        var password = document.getElementById("Password").value;
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
+        var confirmPassword = confirmPasswordInput.value;
+        var confirmPasswordError = document.getElementById("confirmPasswordError");
+        var addButton = document.getElementById("addButton");
+
+        if (password !== confirmPassword) {
+            confirmPasswordError.innerText = "The password and confirmation password do not match.";
+            addButton.disabled = true;
+        } else {
+            confirmPasswordError.innerText = "";
+            enableAddButtonIfRequirementsFulfilled();
+        }
+    }
+
+    function enableAddButtonIfRequirementsFulfilled() {
+        var nameInput = document.getElementById("Name");
+        var emailInput = document.getElementById("Email");
+        var passwordInput = document.getElementById("Password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
+        var designationInput = document.getElementById("Designation");
+        var addButton = document.getElementById("addButton");
+
+        var name = nameInput.value.trim();
+        var email = emailInput.value.trim();
+        var password = passwordInput.value;
+        var confirmPassword = confirmPasswordInput.value;
+        var designation = designation.value.trim();
+
+        var nameError = document.getElementById("nameError");
+        var emailError = document.getElementById("emailError");
+        var passwordError = document.getElementById("passwordError");
+        var designationError = document.getElementById("designationError");
+        var confirmPasswordError = document.getElementById("confirmPasswordError");
+
+        if (name.length > 0 && /^[a-zA-Z\s]+$/.test(name) && /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(email) && /^(?=.*[A-Z])(?=.*[!@@#$%^&*]).{6,}$/.test(password) && password === confirmPassword) {
+            addButton.disabled = false;
+            nameError.innerText = "";
+            emailError.innerText = "";
+            passwordError.innerText = "";
+            confirmPasswordError.innerText = "";
+            designationError.innerText = "";
+        } else {
+            addButton.disabled = true;
+        }
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    document.getElementById("Name").addEventListener("input", validateName);
+    document.getElementById("Email").addEventListener("input", validateEmail);
+    document.getElementById("Designation").addEventListener("input", validateDesignation);
+    document.getElementById("Password").addEventListener("input", validatePassword);
+    document.getElementById("ConfirmPassword").addEventListener("input", validateConfirmPassword);
+    document.getElementById("Phone").addEventListener("input", validatePhone);
+</script>
+
 }
